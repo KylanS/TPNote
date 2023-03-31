@@ -18,7 +18,7 @@ import javafx.collections.ObservableList;
 public class ModelGestionnaire {
 	
 	// Liste couleurs sauvegardees	
-	private ObservableList<Couleur> listeCouleurs;
+	private static ArrayList<Couleur> listeCouleurs;
 	// Indice de la couleur courante dans la liste de couleurs
 	private int indiceCouleurCourante;
 	// Nom du fichier de sauvegarde de la liste de couleurs
@@ -49,19 +49,19 @@ public class ModelGestionnaire {
 	 * Recupere la liste de couleurs depuis le fichier de sauvegarde
 	 * @return Liste de couleurs obtenue ou une liste vide si le fichier est vide
 	 */
-	public static ObservableList<Couleur> deserialiseListe() {
+	public static ArrayList<Couleur> deserialiseListe() {
 		// Liste a retourner
-		ObservableList<Couleur> resultat;
+		ArrayList<Couleur> resultat;
 		//Chemin du fichier de sauvegarde
 		Path P1 = Paths.get(System.getProperty("user.dir"), FIC_SAUVEGARDE);
 		
 		try(ObjectInputStream ois = new ObjectInputStream(Files.newInputStream(P1))){
 			// Deserialisation
-			resultat = (ObservableList<Couleur>) ois.readObject();
+			resultat = (ArrayList<Couleur>) ois.readObject();
 		}catch(Exception e){
 			e.printStackTrace();
 			// Si le fichier est vide, on cree une nouvelle liste vide
-			resultat = FXCollections.observableArrayList();
+			resultat = new ArrayList<>();
 		}
 		return resultat;
 	}
@@ -69,19 +69,19 @@ public class ModelGestionnaire {
 	/**
 	 * Sauvegarde la liste de couleurs dans le fichier de sauvegarde
 	 */
-	public static void serialiseListe(ObservableList<Couleur> liste) {
+	public static void serialiseListe() {
 		//Chemin du fichier de sauvegarde
 		Path P1 = Paths.get(System.getProperty("user.dir"), FIC_SAUVEGARDE);
 		
 		try(ObjectOutputStream oos = new ObjectOutputStream(Files.newOutputStream(P1))){
 			// Serialisation
-			oos.writeObject(liste);
+			oos.writeObject(ModelGestionnaire.listeCouleurs);
 		}catch(Exception e){
 			e.printStackTrace();
 		}
 	}
 	
-	public ObservableList<Couleur> getListeCouleurs() {
+	public ArrayList<Couleur> getListeCouleurs() {
 		return listeCouleurs;
 	}
 }
