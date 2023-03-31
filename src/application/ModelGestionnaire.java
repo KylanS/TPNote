@@ -2,6 +2,7 @@ package application;
 
 import java.io.EOFException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -45,9 +46,14 @@ public class ModelGestionnaire {
 		}
 	}
 	
+	/**
+	 * Recupere la liste de couleurs depuis le fichier de sauvegarde
+	 * @return Liste de couleurs obtenue ou une liste vide si le fichier est vide
+	 */
 	public ArrayList<Couleur> deserialiseListe() {
+		// Liste a retourner
 		ArrayList<Couleur> resultat;
-		
+		//Chemin du fichier de sauvegarde
 		Path P1 = Paths.get(System.getProperty("user.dir"), FIC_SAUVEGARDE);
 		
 		try(ObjectInputStream ois = new ObjectInputStream(Files.newInputStream(P1))){
@@ -59,5 +65,20 @@ public class ModelGestionnaire {
 			resultat = new ArrayList<>();
 		}
 		return resultat;
+	}
+	
+	/**
+	 * Sauvegarde la liste de couleurs dans le fichier de sauvegarde
+	 */
+	public void serialiseListe() {
+		//Chemin du fichier de sauvegarde
+		Path P1 = Paths.get(System.getProperty("user.dir"), FIC_SAUVEGARDE);
+		
+		try(ObjectOutputStream oos = new ObjectOutputStream(Files.newOutputStream(P1))){
+			// Serialisation
+			oos.writeObject(this.listeCouleurs);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
 	}
 }
