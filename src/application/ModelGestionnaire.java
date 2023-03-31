@@ -34,9 +34,15 @@ public class ModelGestionnaire {
 		this.indiceCouleurCourante = 0;
 		
 		// Initialisation de l'interface avec la couleur initiale
-		Couleur initiale = listeCouleurs.get(indiceCouleurCourante);
-		this.majCouleur = new SimpleObjectProperty(Color.rgb(initiale.getRouge(), initiale.getVert(), initiale.getBleu()));
-		this.majLabel = new SimpleStringProperty(initiale.getNom());
+		if (!this.listeCouleurs.isEmpty()) {
+			Couleur initiale = listeCouleurs.get(indiceCouleurCourante);
+			this.majCouleur = new SimpleObjectProperty(Color.rgb(initiale.getRouge(), initiale.getVert(), initiale.getBleu()));
+			this.majLabel = new SimpleStringProperty(initiale.getNom());
+		} else {
+			// Affichage en blanc si la liste de couleurs est vide
+			this.majCouleur = new SimpleObjectProperty(Color.rgb(0, 0, 0));
+			this.majLabel = new SimpleStringProperty("Vide");
+		}
 	}
 	
 	public ArrayList<Couleur> deserialiseListe() {
