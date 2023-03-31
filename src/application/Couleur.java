@@ -1,5 +1,7 @@
 package application;
 
+import java.util.Objects;
+
 public class Couleur {
 	
 	private String nom;
@@ -25,32 +27,33 @@ public class Couleur {
 		return nom;
 	}
 
-	public void setNom(String nom) {
-		this.nom = nom;
-	}
-
 	public int getRouge() {
 		return rouge;
-	}
-
-	public void setRouge(int rouge) {
-		this.rouge = rouge;
 	}
 
 	public int getVert() {
 		return vert;
 	}
 
-	public void setVert(int vert) {
-		this.vert = vert;
-	}
-
 	public int getBleu() {
 		return bleu;
 	}
 
-	public void setBleu(int bleu) {
-		this.bleu = bleu;
+	@Override
+	public int hashCode() {
+		return Objects.hash(bleu, nom, rouge, vert);
 	}
-	
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Couleur other = (Couleur) obj;
+		return bleu == other.bleu && Objects.equals(nom, other.nom) && rouge == other.rouge && vert == other.vert;
+	}
+
 }
