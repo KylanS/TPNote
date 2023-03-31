@@ -1,6 +1,5 @@
 package application;
 
-import java.io.EOFException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.nio.file.Files;
@@ -8,12 +7,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+
 import javafx.scene.paint.Color;
 
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
 public class ModelGestionnaire {
 	
@@ -32,16 +29,16 @@ public class ModelGestionnaire {
 	 * Désérialise listeCouleurs depuis le fichier FIC_SAUVEGARDE
 	 */
 	public ModelGestionnaire() {
-		this.listeCouleurs = this.deserialiseListe();
+		ModelGestionnaire.listeCouleurs = (ArrayList<Couleur>) ModelGestionnaire.deserialiseListe();
 		this.indiceCouleurCourante = 0;
 		
 		// Initialisation de l'interface avec la couleur initiale
-		if (!this.listeCouleurs.isEmpty()) {
+		if (!ModelGestionnaire.listeCouleurs.isEmpty()) {
 			Couleur initiale = listeCouleurs.get(indiceCouleurCourante);
-			this.majCouleur = new SimpleObjectProperty(Color.rgb(initiale.getRouge(), initiale.getVert(), initiale.getBleu()));
+			this.majCouleur = new SimpleObjectProperty<>(Color.rgb(initiale.getRouge(), initiale.getVert(), initiale.getBleu()));
 		} else {
 			// Affichage en blanc si la liste de couleurs est vide
-			this.majCouleur = new SimpleObjectProperty(Color.rgb(0, 0, 0));
+			this.majCouleur = new SimpleObjectProperty<>(Color.rgb(0, 0, 0));
 		}
 	}
 	
@@ -49,13 +46,13 @@ public class ModelGestionnaire {
 	 * Recupere la liste de couleurs depuis le fichier de sauvegarde
 	 * @return Liste de couleurs obtenue ou une liste vide si le fichier est vide
 	 */
-	public static ArrayList<Couleur> deserialiseListe() {
+	public static List<Couleur> deserialiseListe() {
 		// Liste a retourner
 		ArrayList<Couleur> resultat;
 		//Chemin du fichier de sauvegarde
-		Path P1 = Paths.get(System.getProperty("user.dir"), FIC_SAUVEGARDE);
+		Path p1 = Paths.get(System.getProperty("user.dir"), FIC_SAUVEGARDE);
 		
-		try(ObjectInputStream ois = new ObjectInputStream(Files.newInputStream(P1))){
+		try(ObjectInputStream ois = new ObjectInputStream(Files.newInputStream(p1))){
 			// Deserialisation
 			resultat = (ArrayList<Couleur>) ois.readObject();
 		}catch(Exception e){
@@ -71,9 +68,9 @@ public class ModelGestionnaire {
 	 */
 	public static void serialiseListe() {
 		//Chemin du fichier de sauvegarde
-		Path P1 = Paths.get(System.getProperty("user.dir"), FIC_SAUVEGARDE);
+		Path p1 = Paths.get(System.getProperty("user.dir"), FIC_SAUVEGARDE);
 		
-		try(ObjectOutputStream oos = new ObjectOutputStream(Files.newOutputStream(P1))){
+		try(ObjectOutputStream oos = new ObjectOutputStream(Files.newOutputStream(p1))){
 			// Serialisation
 			oos.writeObject(ModelGestionnaire.listeCouleurs);
 		}catch(Exception e){
@@ -81,7 +78,7 @@ public class ModelGestionnaire {
 		}
 	}
 	
-	public ArrayList<Couleur> getListeCouleurs() {
+	public List<Couleur> getListeCouleurs() {
 		return listeCouleurs;
 	}
 }
