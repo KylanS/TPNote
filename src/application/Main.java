@@ -31,6 +31,17 @@ public class Main extends Application {
 		}
 	}
 	
+	@Override
+	public void init() throws Exception {
+		ModelGestionnaire modele = new ModelGestionnaire();
+	}
+	
+	@Override
+	public void stop() throws Exception {
+		// TODO Auto-generated method stub
+		super.stop();
+	}
+	
 	public static void main(String[] args) {
 		launch(args);
 	}
