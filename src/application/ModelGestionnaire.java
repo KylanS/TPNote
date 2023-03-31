@@ -22,7 +22,7 @@ public class ModelGestionnaire {
 	// Indice de la couleur courante dans la liste de couleurs
 	private int indiceCouleurCourante;
 	// Nom du fichier de sauvegarde de la liste de couleurs
-	private final String FIC_SAUVEGARDE = "src/ressources/sauvegardeCouleurs.bin";
+	private static final String FIC_SAUVEGARDE = "src/ressources/sauvegardeCouleurs.bin";
 	
 	// Objet de mise a jour de la couleur
 	private SimpleObjectProperty<Color> majCouleur;
@@ -49,7 +49,7 @@ public class ModelGestionnaire {
 	 * Recupere la liste de couleurs depuis le fichier de sauvegarde
 	 * @return Liste de couleurs obtenue ou une liste vide si le fichier est vide
 	 */
-	public ObservableList<Couleur> deserialiseListe() {
+	public static ObservableList<Couleur> deserialiseListe() {
 		// Liste a retourner
 		ObservableList<Couleur> resultat;
 		//Chemin du fichier de sauvegarde
@@ -69,15 +69,19 @@ public class ModelGestionnaire {
 	/**
 	 * Sauvegarde la liste de couleurs dans le fichier de sauvegarde
 	 */
-	public void serialiseListe() {
+	public static void serialiseListe(ObservableList<Couleur> liste) {
 		//Chemin du fichier de sauvegarde
 		Path P1 = Paths.get(System.getProperty("user.dir"), FIC_SAUVEGARDE);
 		
 		try(ObjectOutputStream oos = new ObjectOutputStream(Files.newOutputStream(P1))){
 			// Serialisation
-			oos.writeObject(this.listeCouleurs);
+			oos.writeObject(liste);
 		}catch(Exception e){
 			e.printStackTrace();
 		}
+	}
+	
+	public ObservableList<Couleur> getListeCouleurs() {
+		return listeCouleurs;
 	}
 }
